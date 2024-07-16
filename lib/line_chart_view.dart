@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_line_chart/line_chart_painter.dart';
+import 'package:flutter_custom_line_chart/bar_chart_painter.dart';
 import 'package:flutter_custom_line_chart/my_weight.dart';
 import 'package:touchable/touchable.dart';
 
@@ -17,7 +17,8 @@ class LineChartView extends StatefulWidget {
   State<LineChartView> createState() => _LineChartViewState();
 }
 
-class _LineChartViewState extends State<LineChartView> with SingleTickerProviderStateMixin {
+class _LineChartViewState extends State<LineChartView>
+    with SingleTickerProviderStateMixin {
   // this list keep the original value generated
   late final List<MyWeight> _myWeightProgressGenerated = _genDataList();
 
@@ -27,7 +28,8 @@ class _LineChartViewState extends State<LineChartView> with SingleTickerProvider
   double _maxWeight = -double.maxFinite;
   double _minWeight = double.maxFinite;
 
-  late final _controller = AnimationController(duration: const Duration(milliseconds: 500), vsync: this);
+  late final _controller = AnimationController(
+      duration: const Duration(milliseconds: 500), vsync: this);
   late final _animation = Tween<double>(begin: 0.0, end: 1.0);
 
   @override
@@ -49,10 +51,12 @@ class _LineChartViewState extends State<LineChartView> with SingleTickerProvider
     // define range weight
     const minWeight = 40;
     const maxWeight = 50;
-    for (int i = 0; i < 7; i++) {
-      final randomWeight =
-          (random.nextInt(maxWeight - minWeight) + minWeight) + double.parse(random.nextDouble().toStringAsFixed(1));
-      final myWeight = MyWeight(dateTime: DateTime.now().add(Duration(days: i)), weight: randomWeight);
+    for (int i = 0; i < 31; i++) {
+      final randomWeight = (random.nextInt(maxWeight - minWeight) + minWeight) +
+          double.parse(random.nextDouble().toStringAsFixed(1));
+      final myWeight = MyWeight(
+          dateTime: DateTime.now().add(Duration(days: i)),
+          weight: randomWeight);
       progress.add(myWeight);
       _minWeight = randomWeight < _minWeight ? randomWeight : _minWeight;
       _maxWeight = randomWeight > _maxWeight ? randomWeight : _maxWeight;
@@ -84,7 +88,7 @@ class _LineChartViewState extends State<LineChartView> with SingleTickerProvider
       gesturesToOverride: const [GestureType.onTapDown],
       builder: (context) {
         return CustomPaint(
-          painter: LineChartPainter(
+          painter: BarChartPainter(
             myWeightProgress: _myWeightProgressAnim,
             heightView: widget.heightChart,
             minWeight: _minWeight,
