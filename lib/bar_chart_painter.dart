@@ -160,12 +160,13 @@ class BarChartPainter extends CustomPainter {
             tooltipHeight),
         const Radius.circular(4),
       );
-      canvas.drawRRect(tooltipBackground, tooltipPaint);
+      // canvas.drawRRect(tooltipBackground, tooltipPaint);
 
       // Draw tooltip text
       final Offset textPosition =
           Offset(adjustedPosition.dx + 10, adjustedPosition.dy + 5);
       textPainter.paint(canvas, textPosition);
+      showCustomTooltip(context, 'tooltipContent', adjustedPosition);
 
       final double barWidth = size.width / myWeightProgress.length * 0.8;
       final double barSpacing = size.width / myWeightProgress.length * 0.2;
@@ -199,15 +200,19 @@ class BarChartPainter extends CustomPainter {
 
   void showCustomTooltip(
       BuildContext context, String content, Offset position) {
-    // Remove existing tooltip if any
-    _currentTooltipOverlayEntry?.remove();
-    _currentTooltipOverlayEntry = OverlayEntry(
-      builder: (context) =>
-          CustomTooltipWidget(content: content, position: position),
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Remove existing tooltip if any
+      _currentTooltipOverlayEntry?.remove();
+      _currentTooltipOverlayEntry = null;
 
-    // Find the overlay and insert the tooltip
-    Overlay.of(context)?.insert(_currentTooltipOverlayEntry!);
+      _currentTooltipOverlayEntry = OverlayEntry(
+        builder: (context) =>
+            CustomTooltipWidget(content: content, position: position),
+      );
+
+      // Find the overlay and insert the tooltip
+      Overlay.of(context).insert(_currentTooltipOverlayEntry!);
+    });
   }
 
   void hideCustomTooltip() {

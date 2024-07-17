@@ -84,32 +84,35 @@ class _LineChartViewState extends State<LineChartView>
 
   @override
   Widget build(BuildContext context) {
-    return CanvasTouchDetector(
-      gesturesToOverride: const [GestureType.onTapDown],
-      builder: (context) {
-        return CustomPaint(
-          painter: BarChartPainter(
-            myWeightProgress: _myWeightProgressAnim,
-            heightView: widget.heightChart,
-            minWeight: _minWeight,
-            maxWeight: _maxWeight,
-            context: context,
-            onPointClick: (myWeight) {
-              for (var e in _myWeightProgressAnim) {
-                if (e == myWeight) {
-                  e.isFocusing = !e.isFocusing;
-                } else {
-                  e.isFocusing = false;
+    return SizedBox(
+      height: widget.heightChart,
+      child: CanvasTouchDetector(
+        gesturesToOverride: const [GestureType.onTapDown],
+        builder: (context) {
+          return CustomPaint(
+            painter: BarChartPainter(
+              myWeightProgress: _myWeightProgressAnim,
+              heightView: widget.heightChart,
+              minWeight: _minWeight,
+              maxWeight: _maxWeight,
+              context: context,
+              onPointClick: (myWeight) {
+                for (var e in _myWeightProgressAnim) {
+                  if (e == myWeight) {
+                    e.isFocusing = !e.isFocusing;
+                  } else {
+                    e.isFocusing = false;
+                  }
                 }
-              }
-              setState(() {
-                _myWeightProgressAnim = [..._myWeightProgressAnim];
-              });
-            },
-          ),
-          size: Size(double.infinity, widget.heightChart),
-        );
-      },
+                setState(() {
+                  _myWeightProgressAnim = [..._myWeightProgressAnim];
+                });
+              },
+            ),
+            size: Size(double.infinity, widget.heightChart),
+          );
+        },
+      ),
     );
   }
 }

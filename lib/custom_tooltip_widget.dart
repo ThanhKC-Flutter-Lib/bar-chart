@@ -13,19 +13,16 @@ class CustomTooltipWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Calculate screen position based on the given Offset
-    final screenPosition = MediaQuery.of(context).size.width * position.dx;
+    final screenPosition = position.dx + 20;
 
     return Positioned(
-      left: screenPosition,
-      top: position.dy,
-      child: Material(
-        elevation: 5.0,
-        borderRadius: BorderRadius.circular(8),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(content),
-        ),
-      ),
-    );
+        left: screenPosition,
+        top: position.dy,
+        width: 50,
+        child: Container(
+          width: 50,
+          height: 50,
+          color: Colors.red,
+        ));
   }
 }
